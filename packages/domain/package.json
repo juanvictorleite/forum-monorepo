@@ -1,0 +1,28 @@
+{
+  "name": "@forum/domain",
+  "version": "1.0.0",
+  "description": "Forum domain package",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@biomejs/biome": "2.2.6",
+    "@faker-js/faker": "^10.1.0",
+    "@types/node": "^24.7.2",
+    "typescript": "^5.9.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.18"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "forum-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n docker,studio,api -c yellow,blue,green \"cd apps/api && docker compose up\" \"pnpm --filter @forum/api studio\" \"pnpm --filter @forum/api start:dev\"",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test"
+  },
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
