@@ -5,11 +5,12 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "dev": "tsc -b tsconfig.build.json --watch & tsc-alias --watch",
     "build": "tsc -b tsconfig.build.json && tsc-alias",
     "lint": "biome check",
     "lint:fix": "biome check --write",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
