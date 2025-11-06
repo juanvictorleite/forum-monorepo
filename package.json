@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "concurrently -n docker,studio,api -c yellow,blue,green \"sh -c 'cd apps/api && docker compose up'\" \"sh -c 'wait-on tcp:5432 && pnpm --filter @forum/api studio'\" \"sh -c 'wait-on tcp:5432 && pnpm --filter @forum/api start:dev'\"",
     "build": "pnpm -r build",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint"
   },
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
