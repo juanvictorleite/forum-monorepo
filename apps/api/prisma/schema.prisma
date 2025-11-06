@@ -14,23 +14,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+}
+
 model User {
-  id       String @id @default(uuid())
+  id       String   @id @default(uuid())
   name     String
-  email    String @unique
+  email    String   @unique
   password String
+  role     UserRole @default(STUDENT)
 
   questions Question[]
+  answers   Answer[]
 }
 
 model Question {
-  id        String    @id @default(uuid())
-  title     String
-  slug      String    @unique
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  authorId  String
+  id           String    @id @default(uuid())
+  title        String
+  slug         String    @unique
+  content      String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+  authorId     String
+  bestAnswerId String?   @unique
 
-  author User @relation(fields: [authorId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id])
+  answers    Answer[]
+  bestAnswer Answer?  @relation("bestAnswer", fields: [bestAnswerId], references: [id])
+}
+
+model Answer {
+  id         String    @id @default(uuid())
+  content    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  authorId   String
+  questionId String
+
+  author       User      @relation(fields: [authorId], references: [id])
+  question     Question  @relation(fields: [questionId], references: [id])
+  bestAnswerOn Question? @relation("bestAnswer")
 }
