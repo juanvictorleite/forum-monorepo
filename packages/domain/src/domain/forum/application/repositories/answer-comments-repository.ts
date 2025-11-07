@@ -1,15 +1,15 @@
 import type { PaginationParams } from "@/core/repositories/pagination-params";
 import type { AnswerComment } from "../../enterprise/entities/answer-comment";
 
-export interface AnswerCommentsRepository {
-  findById(id: string): Promise<AnswerComment | null>;
+export abstract class AnswerCommentsRepository {
+  abstract findById(id: string): Promise<AnswerComment | null>;
 
-  findManyByAnswerId(
+  abstract findManyByAnswerId(
     answerId: string,
     params: PaginationParams,
   ): Promise<AnswerComment[]>;
 
-  create(answerComment: AnswerComment): Promise<void>;
+  abstract create(answerComment: AnswerComment): Promise<void>;
 
-  delete(answerComment: AnswerComment): Promise<void>;
+  abstract delete(answerComment: AnswerComment): Promise<void>;
 }
