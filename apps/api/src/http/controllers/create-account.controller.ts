@@ -1,5 +1,15 @@
-import { RegisterStudentUseCase } from '@forum/domain';
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+  RegisterStudentUseCase,
+  StudentAlreadyExistsError,
+} from '@forum/domain';
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+} from '@nestjs/common';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
@@ -27,7 +37,14 @@ export class CreateAccountController {
     });
 
     if (result.isLeft()) {
-      throw new Error();
+      const error = result.value;
+
+      switch (error.constructor) {
+        case StudentAlreadyExistsError:
+          throw new ConflictException(error.message);
+        default:
+          throw new BadRequestException(error.message);
+      }
     }
   }
 }

@@ -1,5 +1,14 @@
-import { AuthenticateStudentUseCase } from '@forum/domain';
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  AuthenticateStudentUseCase,
+  WrongCredentialsError,
+} from '@forum/domain';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
@@ -24,7 +33,14 @@ export class AuthenticateController {
     });
 
     if (result.isLeft()) {
-      throw new Error();
+      const error = result.value;
+
+      switch (error.constructor) {
+        case WrongCredentialsError:
+          throw new UnauthorizedException(error.message);
+        default:
+          throw new BadRequestException(error.message);
+      }
     }
 
     const { accessToken } = result.value;
