@@ -1,4 +1,5 @@
 export * from "./answer-question";
+export * from "./authenticate-student";
 export * from "./choose-question-best-answer";
 export * from "./comment-on-answer";
 export * from "./comment-on-question";
@@ -9,8 +10,10 @@ export * from "./delete-question";
 export * from "./delete-question-comment";
 export * from "./edit-answer";
 export * from "./edit-question";
+export * from "./errors";
 export * from "./fetch-answer-comments";
 export * from "./fetch-question-answers";
 export * from "./fetch-question-comments";
 export * from "./fetch-recent-questions";
 export * from "./get-question-by-slug";
+export * from "./register-student";
