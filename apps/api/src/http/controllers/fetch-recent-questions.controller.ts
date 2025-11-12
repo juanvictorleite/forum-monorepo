@@ -1,14 +1,7 @@
 import { FetchRecentQuestionsUseCase } from '@forum/domain';
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { z } from 'zod';
 import { QuestionPresenter } from '../presenters/question-presenter';
 
@@ -25,7 +18,6 @@ type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>;
 
 @Controller('/questions')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 export class FetchRecentQuestionsController {
   constructor(
     private fetchRecentQuestionsUseCase: FetchRecentQuestionsUseCase,

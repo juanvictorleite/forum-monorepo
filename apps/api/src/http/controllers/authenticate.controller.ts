@@ -10,6 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { createZodDto } from 'nestjs-zod';
+import { Public } from 'src/auth/public';
 import { z } from 'zod';
 
 const authenticateBodySchema = z.object({
@@ -20,6 +21,7 @@ const authenticateBodySchema = z.object({
 class AuthenticateDTO extends createZodDto(authenticateBodySchema) {}
 
 @Controller('/sessions')
+@Public()
 export class AuthenticateController {
   constructor(private authenticateStudentUseCase: AuthenticateStudentUseCase) {}
 

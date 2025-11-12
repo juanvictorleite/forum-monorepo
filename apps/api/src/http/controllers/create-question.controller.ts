@@ -1,15 +1,8 @@
 import { CreateQuestionUseCase } from '@forum/domain';
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { createZodDto } from 'nestjs-zod';
 import { CurrentUser } from 'src/auth/current-user-decorator';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { type UserPayload } from 'src/auth/jwt.strategy';
 import { z } from 'zod';
 
@@ -22,7 +15,6 @@ class CreateQuestionDTO extends createZodDto(createQuestionBodySchema) {}
 
 @Controller('/questions')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 export class CreateQuestionController {
   constructor(private createQuestion: CreateQuestionUseCase) {}
 

@@ -11,6 +11,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { createZodDto } from 'nestjs-zod';
+import { Public } from 'src/auth/public';
 import { z } from 'zod';
 
 const createAccountBodySchema = z.object({
@@ -22,6 +23,7 @@ const createAccountBodySchema = z.object({
 class CreateAccountDTO extends createZodDto(createAccountBodySchema) {}
 
 @Controller('/accounts')
+@Public()
 export class CreateAccountController {
   constructor(private registerStudent: RegisterStudentUseCase) {}
 
