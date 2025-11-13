@@ -28,6 +28,7 @@ model User {
 
   questions Question[]
   answers   Answer[]
+  comments  Comment[]
 }
 
 model Question {
@@ -40,9 +41,11 @@ model Question {
   authorId     String
   bestAnswerId String?   @unique
 
-  author     User     @relation(fields: [authorId], references: [id])
-  answers    Answer[]
-  bestAnswer Answer?  @relation("bestAnswer", fields: [bestAnswerId], references: [id])
+  author      User         @relation(fields: [authorId], references: [id])
+  answers     Answer[]
+  bestAnswer  Answer?      @relation("bestAnswer", fields: [bestAnswerId], references: [id])
+  comments    Comment[]
+  attachments Attachment[]
 }
 
 model Answer {
@@ -53,7 +56,34 @@ model Answer {
   authorId   String
   questionId String
 
-  author       User      @relation(fields: [authorId], references: [id])
-  question     Question  @relation(fields: [questionId], references: [id])
-  bestAnswerOn Question? @relation("bestAnswer")
+  author       User         @relation(fields: [authorId], references: [id])
+  question     Question     @relation(fields: [questionId], references: [id])
+  bestAnswerOn Question?    @relation("bestAnswer")
+  comments     Comment[]
+  attachments  Attachment[]
+}
+
+model Comment {
+  id         String    @id @default(uuid())
+  content    String
+  authorId   String
+  questionId String?
+  answerId   String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  question Question? @relation(fields: [questionId], references: [id])
+  answer   Answer?   @relation(fields: [answerId], references: [id])
+  author   User      @relation(fields: [authorId], references: [id])
+}
+
+model Attachment {
+  id         String  @id @default(uuid())
+  title      String
+  url        String
+  questionId String?
+  answerId   String?
+
+  question Question? @relation(fields: [questionId], references: [id])
+  answer   Answer?   @relation(fields: [answerId], references: [id])
 }
