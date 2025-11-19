@@ -1,9 +1,11 @@
 import {
+  AnswerAttachmentsRepository,
   AnswerQuestionUseCase,
   AnswersRepository,
   AuthenticateStudentUseCase,
   CreateQuestionUseCase,
   DeleteQuestionUseCase,
+  EditAnswerUseCase,
   EditQuestionUseCase,
   Encrypter,
   FetchRecentQuestionsUseCase,
@@ -20,6 +22,7 @@ import { BcryptHasher } from 'src/cryptography/bcrypt-hasher';
 import { CryptographyModule } from 'src/cryptography/cryptography.module';
 import { JwtEncrypter } from 'src/cryptography/jwt-encrypter';
 import { DatabaseModule } from 'src/database/database.module';
+import { PrismaAnswerAttachmentsRepository } from 'src/database/prisma/repositories/prisma-answer-attachments-repository';
 import { PrismaAnswersRepository } from 'src/database/prisma/repositories/prisma-answers-repository';
 import { PrismaQuestionAttachmentsRepository } from 'src/database/prisma/repositories/prisma-question-attachments-repository';
 import { PrismaQuestionsRepository } from 'src/database/prisma/repositories/prisma-questions-repository';
@@ -29,6 +32,7 @@ import { AuthenticateController } from './controllers/authenticate.controller';
 import { CreateAccountController } from './controllers/create-account.controller';
 import { CreateQuestionController } from './controllers/create-question.controller';
 import { DeleteQuestionController } from './controllers/delete-question.controller';
+import { EditAnswerController } from './controllers/edit-answer.controller';
 import { EditQuestionController } from './controllers/edit-question.controller';
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller';
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller';
@@ -44,6 +48,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     EditQuestionController,
     DeleteQuestionController,
     AnswerQuestionController,
+    EditAnswerController,
   ],
   providers: [
     {
@@ -97,6 +102,14 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
       provide: AnswerQuestionUseCase,
       useFactory: (repo: AnswersRepository) => new AnswerQuestionUseCase(repo),
       inject: [PrismaAnswersRepository],
+    },
+    {
+      provide: EditAnswerUseCase,
+      useFactory: (
+        repo: AnswersRepository,
+        attRepo: AnswerAttachmentsRepository,
+      ) => new EditAnswerUseCase(repo, attRepo),
+      inject: [PrismaAnswersRepository, PrismaAnswerAttachmentsRepository],
     },
   ],
 })
