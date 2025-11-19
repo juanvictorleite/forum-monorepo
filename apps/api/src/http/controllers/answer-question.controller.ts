@@ -6,6 +6,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { createZodDto } from 'nestjs-zod';
 import { CurrentUser } from 'src/auth/current-user-decorator';
 import { type UserPayload } from 'src/auth/jwt.strategy';
@@ -18,6 +19,7 @@ const answerQuestionBodySchema = z.object({
 class AnswerQuestionDTO extends createZodDto(answerQuestionBodySchema) {}
 
 @Controller('/questions/:questionId/answers')
+@ApiBearerAuth()
 export class AnswerQuestionController {
   constructor(private answerQuestion: AnswerQuestionUseCase) {}
 

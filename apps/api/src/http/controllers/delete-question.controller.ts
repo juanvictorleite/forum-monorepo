@@ -11,12 +11,12 @@ import { CurrentUser } from 'src/auth/current-user-decorator';
 import { type UserPayload } from 'src/auth/jwt.strategy';
 
 @Controller('/questions/:id')
+@ApiBearerAuth()
 export class DeleteQuestionController {
   constructor(private deleteQuestion: DeleteQuestionUseCase) {}
 
   @Delete()
   @HttpCode(204)
-  @ApiBearerAuth()
   async handle(
     @CurrentUser() user: UserPayload,
     @Param('id') questionId: string,
