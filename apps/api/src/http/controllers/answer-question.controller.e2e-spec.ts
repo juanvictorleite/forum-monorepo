@@ -59,4 +59,8 @@ describe('Answer question (E2E)', () => {
 
     expect(answerOnDatabase).toBeTruthy();
   });
+
+  afterAll(async () => {
+    await app.close();
+  });
 });

@@ -56,4 +56,8 @@ describe('Delete question (E2E)', () => {
 
     expect(questionOnDatabase).toBeNull();
   });
+
+  afterAll(async () => {
+    await app.close();
+  });
 });

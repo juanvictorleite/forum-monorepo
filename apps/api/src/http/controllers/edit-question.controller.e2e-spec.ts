@@ -61,4 +61,8 @@ describe('Edit question (E2E)', () => {
 
     expect(questionOnDatabase).toBeTruthy();
   });
+
+  afterAll(async () => {
+    await app.close();
+  });
 });
