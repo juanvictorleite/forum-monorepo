@@ -8,6 +8,7 @@ import {
   CommentOnAnswerUseCase,
   CommentOnQuestionUseCase,
   CreateQuestionUseCase,
+  DeleteAnswerCommentUseCase,
   DeleteAnswerUseCase,
   DeleteQuestionCommentUseCase,
   DeleteQuestionUseCase,
@@ -44,6 +45,7 @@ import { CommentOnAnswerController } from './controllers/comment-on-answer.contr
 import { CommentOnQuestionController } from './controllers/comment-on-question.controller';
 import { CreateAccountController } from './controllers/create-account.controller';
 import { CreateQuestionController } from './controllers/create-question.controller';
+import { DeleteAnswerCommentController } from './controllers/delete-answer-comment.controller';
 import { DeleteAnswerController } from './controllers/delete-answer.controller';
 import { DeleteQuestionCommentController } from './controllers/delete-question-comment.controller';
 import { DeleteQuestionController } from './controllers/delete-question.controller';
@@ -71,6 +73,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     CommentOnQuestionController,
     DeleteQuestionCommentController,
     CommentOnAnswerController,
+    DeleteAnswerCommentController,
   ],
   providers: [
     {
@@ -178,6 +181,12 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
       ) =>
         new CommentOnAnswerUseCase(answersRepository, answerCommentsRepository),
       inject: [PrismaAnswersRepository, PrismaAnswerCommentsRepository],
+    },
+    {
+      provide: DeleteAnswerCommentUseCase,
+      useFactory: (repo: AnswerCommentsRepository) =>
+        new DeleteAnswerCommentUseCase(repo),
+      inject: [PrismaAnswerCommentsRepository],
     },
   ],
 })
