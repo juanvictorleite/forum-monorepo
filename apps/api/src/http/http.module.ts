@@ -3,6 +3,7 @@ import {
   AnswerQuestionUseCase,
   AnswersRepository,
   AuthenticateStudentUseCase,
+  ChooseQuestionBestAnswerUseCase,
   CreateQuestionUseCase,
   DeleteAnswerUseCase,
   DeleteQuestionUseCase,
@@ -31,6 +32,7 @@ import { PrismaQuestionsRepository } from 'src/database/prisma/repositories/pris
 import { PrismaStudentsRepository } from 'src/database/prisma/repositories/prisma-students-repository';
 import { AnswerQuestionController } from './controllers/answer-question.controller';
 import { AuthenticateController } from './controllers/authenticate.controller';
+import { ChooseQuestionBestAnswerController } from './controllers/choose-question-best-answer.controller';
 import { CreateAccountController } from './controllers/create-account.controller';
 import { CreateQuestionController } from './controllers/create-question.controller';
 import { DeleteAnswerController } from './controllers/delete-answer.controller';
@@ -55,6 +57,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     EditAnswerController,
     DeleteAnswerController,
     FetchQuestionAnswersController,
+    ChooseQuestionBestAnswerController,
   ],
   providers: [
     {
@@ -127,6 +130,14 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
       useFactory: (repo: AnswersRepository) =>
         new FetchQuestionAnswersUseCase(repo),
       inject: [PrismaAnswersRepository],
+    },
+    {
+      provide: ChooseQuestionBestAnswerUseCase,
+      useFactory: (
+        questionsRepo: QuestionsRepository,
+        answersRepo: AnswersRepository,
+      ) => new ChooseQuestionBestAnswerUseCase(questionsRepo, answersRepo),
+      inject: [PrismaQuestionsRepository, PrismaAnswersRepository],
     },
   ],
 })
