@@ -1,9 +1,11 @@
 import {
   AnswerAttachmentsRepository,
+  AnswerCommentsRepository,
   AnswerQuestionUseCase,
   AnswersRepository,
   AuthenticateStudentUseCase,
   ChooseQuestionBestAnswerUseCase,
+  CommentOnAnswerUseCase,
   CommentOnQuestionUseCase,
   CreateQuestionUseCase,
   DeleteAnswerUseCase,
@@ -29,6 +31,7 @@ import { CryptographyModule } from 'src/cryptography/cryptography.module';
 import { JwtEncrypter } from 'src/cryptography/jwt-encrypter';
 import { DatabaseModule } from 'src/database/database.module';
 import { PrismaAnswerAttachmentsRepository } from 'src/database/prisma/repositories/prisma-answer-attachments-repository';
+import { PrismaAnswerCommentsRepository } from 'src/database/prisma/repositories/prisma-answer-comments-repository';
 import { PrismaAnswersRepository } from 'src/database/prisma/repositories/prisma-answers-repository';
 import { PrismaQuestionAttachmentsRepository } from 'src/database/prisma/repositories/prisma-question-attachments-repository';
 import { PrismaQuestionCommentsRepository } from 'src/database/prisma/repositories/prisma-question-comments-repository';
@@ -37,6 +40,7 @@ import { PrismaStudentsRepository } from 'src/database/prisma/repositories/prism
 import { AnswerQuestionController } from './controllers/answer-question.controller';
 import { AuthenticateController } from './controllers/authenticate.controller';
 import { ChooseQuestionBestAnswerController } from './controllers/choose-question-best-answer.controller';
+import { CommentOnAnswerController } from './controllers/comment-on-answer.controller';
 import { CommentOnQuestionController } from './controllers/comment-on-question.controller';
 import { CreateAccountController } from './controllers/create-account.controller';
 import { CreateQuestionController } from './controllers/create-question.controller';
@@ -66,6 +70,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     ChooseQuestionBestAnswerController,
     CommentOnQuestionController,
     DeleteQuestionCommentController,
+    CommentOnAnswerController,
   ],
   providers: [
     {
@@ -164,6 +169,15 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
       useFactory: (repo: QuestionCommentsRepository) =>
         new DeleteQuestionCommentUseCase(repo),
       inject: [PrismaQuestionCommentsRepository],
+    },
+    {
+      provide: CommentOnAnswerUseCase,
+      useFactory: (
+        answersRepository: AnswersRepository,
+        answerCommentsRepository: AnswerCommentsRepository,
+      ) =>
+        new CommentOnAnswerUseCase(answersRepository, answerCommentsRepository),
+      inject: [PrismaAnswersRepository, PrismaAnswerCommentsRepository],
     },
   ],
 })
