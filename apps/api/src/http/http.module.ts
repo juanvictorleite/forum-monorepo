@@ -9,6 +9,7 @@ import {
   EditAnswerUseCase,
   EditQuestionUseCase,
   Encrypter,
+  FetchQuestionAnswersUseCase,
   FetchRecentQuestionsUseCase,
   GetQuestionBySlugUseCase,
   HashComparer,
@@ -36,6 +37,7 @@ import { DeleteAnswerController } from './controllers/delete-answer.controller';
 import { DeleteQuestionController } from './controllers/delete-question.controller';
 import { EditAnswerController } from './controllers/edit-answer.controller';
 import { EditQuestionController } from './controllers/edit-question.controller';
+import { FetchQuestionAnswersController } from './controllers/fetch-question-answers.controller';
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller';
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller';
 
@@ -52,6 +54,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     AnswerQuestionController,
     EditAnswerController,
     DeleteAnswerController,
+    FetchQuestionAnswersController,
   ],
   providers: [
     {
@@ -117,6 +120,12 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     {
       provide: DeleteAnswerUseCase,
       useFactory: (repo: AnswersRepository) => new DeleteAnswerUseCase(repo),
+      inject: [PrismaAnswersRepository],
+    },
+    {
+      provide: FetchQuestionAnswersUseCase,
+      useFactory: (repo: AnswersRepository) =>
+        new FetchQuestionAnswersUseCase(repo),
       inject: [PrismaAnswersRepository],
     },
   ],
