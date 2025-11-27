@@ -1,6 +1,7 @@
 export * from "./make-answer";
 export * from "./make-answer-attachments";
 export * from "./make-answer-comment";
+export * from "./make-attachment";
 export * from "./make-notification";
 export * from "./make-question";
 export * from "./make-question-attachments";
