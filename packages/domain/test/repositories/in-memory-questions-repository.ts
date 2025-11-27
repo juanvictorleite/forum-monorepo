@@ -44,11 +44,23 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
 
     this.items[itemIndex] = question;
 
+    await this.questionAttachmentsRepository.createMany(
+      question.attachments.getNewItems(),
+    );
+
+    await this.questionAttachmentsRepository.deleteMany(
+      question.attachments.getRemovedItems(),
+    );
+
     DomainEvents.dispatchEventsForAggregate(question.id);
   }
 
   async create(question: Question) {
     this.items.push(question);
+
+    await this.questionAttachmentsRepository.createMany(
+      question.attachments.getItems(),
+    );
 
     DomainEvents.dispatchEventsForAggregate(question.id);
   }
