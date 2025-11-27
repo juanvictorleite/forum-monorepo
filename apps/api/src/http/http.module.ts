@@ -32,19 +32,8 @@ import {
   Uploader,
 } from '@forum/domain';
 import { Module } from '@nestjs/common';
-import { BcryptHasher } from 'src/cryptography/bcrypt-hasher';
 import { CryptographyModule } from 'src/cryptography/cryptography.module';
-import { JwtEncrypter } from 'src/cryptography/jwt-encrypter';
 import { DatabaseModule } from 'src/database/database.module';
-import { PrismaAnswerAttachmentsRepository } from 'src/database/prisma/repositories/prisma-answer-attachments-repository';
-import { PrismaAnswerCommentsRepository } from 'src/database/prisma/repositories/prisma-answer-comments-repository';
-import { PrismaAnswersRepository } from 'src/database/prisma/repositories/prisma-answers-repository';
-import { PrismaAttachmentsRepository } from 'src/database/prisma/repositories/prisma-attachments-repository';
-import { PrismaQuestionAttachmentsRepository } from 'src/database/prisma/repositories/prisma-question-attachments-repository';
-import { PrismaQuestionCommentsRepository } from 'src/database/prisma/repositories/prisma-question-comments-repository';
-import { PrismaQuestionsRepository } from 'src/database/prisma/repositories/prisma-questions-repository';
-import { PrismaStudentsRepository } from 'src/database/prisma/repositories/prisma-students-repository';
-import { R2Storage } from 'src/storage/r2-storage';
 import { StorageModule } from 'src/storage/storage.module';
 import { AnswerQuestionController } from './controllers/answer-question.controller';
 import { AuthenticateController } from './controllers/authenticate.controller';
@@ -94,13 +83,13 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
       provide: CreateQuestionUseCase,
       useFactory: (repo: QuestionsRepository) =>
         new CreateQuestionUseCase(repo),
-      inject: [PrismaQuestionsRepository],
+      inject: [QuestionsRepository],
     },
     {
       provide: FetchRecentQuestionsUseCase,
       useFactory: (repo: QuestionsRepository) =>
         new FetchRecentQuestionsUseCase(repo),
-      inject: [PrismaQuestionsRepository],
+      inject: [QuestionsRepository],
     },
     {
       provide: AuthenticateStudentUseCase,
@@ -109,19 +98,19 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
         hashComparer: HashComparer,
         encrypter: Encrypter,
       ) => new AuthenticateStudentUseCase(repo, hashComparer, encrypter),
-      inject: [PrismaStudentsRepository, BcryptHasher, JwtEncrypter],
+      inject: [StudentsRepository, HashComparer, Encrypter],
     },
     {
       provide: RegisterStudentUseCase,
       useFactory: (repo: StudentsRepository, hashGenerator: HashGenerator) =>
         new RegisterStudentUseCase(repo, hashGenerator),
-      inject: [PrismaStudentsRepository, BcryptHasher],
+      inject: [StudentsRepository, HashGenerator],
     },
     {
       provide: GetQuestionBySlugUseCase,
       useFactory: (repo: QuestionsRepository) =>
         new GetQuestionBySlugUseCase(repo),
-      inject: [PrismaQuestionsRepository],
+      inject: [QuestionsRepository],
     },
     {
       provide: EditQuestionUseCase,
@@ -129,18 +118,18 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
         questionsRepo: QuestionsRepository,
         questionAttachmentsRepo: QuestionAttachmentsRepository,
       ) => new EditQuestionUseCase(questionsRepo, questionAttachmentsRepo),
-      inject: [PrismaQuestionsRepository, PrismaQuestionAttachmentsRepository],
+      inject: [QuestionsRepository, QuestionAttachmentsRepository],
     },
     {
       provide: DeleteQuestionUseCase,
       useFactory: (repo: QuestionsRepository) =>
         new DeleteQuestionUseCase(repo),
-      inject: [PrismaQuestionsRepository],
+      inject: [QuestionsRepository],
     },
     {
       provide: AnswerQuestionUseCase,
       useFactory: (repo: AnswersRepository) => new AnswerQuestionUseCase(repo),
-      inject: [PrismaAnswersRepository],
+      inject: [AnswersRepository],
     },
     {
       provide: EditAnswerUseCase,
@@ -148,18 +137,18 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
         repo: AnswersRepository,
         attRepo: AnswerAttachmentsRepository,
       ) => new EditAnswerUseCase(repo, attRepo),
-      inject: [PrismaAnswersRepository, PrismaAnswerAttachmentsRepository],
+      inject: [AnswersRepository, AnswerAttachmentsRepository],
     },
     {
       provide: DeleteAnswerUseCase,
       useFactory: (repo: AnswersRepository) => new DeleteAnswerUseCase(repo),
-      inject: [PrismaAnswersRepository],
+      inject: [AnswersRepository],
     },
     {
       provide: FetchQuestionAnswersUseCase,
       useFactory: (repo: AnswersRepository) =>
         new FetchQuestionAnswersUseCase(repo),
-      inject: [PrismaAnswersRepository],
+      inject: [AnswersRepository],
     },
     {
       provide: ChooseQuestionBestAnswerUseCase,
@@ -167,7 +156,7 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
         questionsRepo: QuestionsRepository,
         answersRepo: AnswersRepository,
       ) => new ChooseQuestionBestAnswerUseCase(questionsRepo, answersRepo),
-      inject: [PrismaQuestionsRepository, PrismaAnswersRepository],
+      inject: [QuestionsRepository, AnswersRepository],
     },
     {
       provide: CommentOnQuestionUseCase,
@@ -179,13 +168,13 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
           questionsRepository,
           questionCommentsRepository,
         ),
-      inject: [PrismaQuestionsRepository, PrismaQuestionCommentsRepository],
+      inject: [QuestionsRepository, QuestionCommentsRepository],
     },
     {
       provide: DeleteQuestionCommentUseCase,
       useFactory: (repo: QuestionCommentsRepository) =>
         new DeleteQuestionCommentUseCase(repo),
-      inject: [PrismaQuestionCommentsRepository],
+      inject: [QuestionCommentsRepository],
     },
     {
       provide: CommentOnAnswerUseCase,
@@ -194,31 +183,31 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
         answerCommentsRepository: AnswerCommentsRepository,
       ) =>
         new CommentOnAnswerUseCase(answersRepository, answerCommentsRepository),
-      inject: [PrismaAnswersRepository, PrismaAnswerCommentsRepository],
+      inject: [AnswersRepository, AnswerCommentsRepository],
     },
     {
       provide: DeleteAnswerCommentUseCase,
       useFactory: (repo: AnswerCommentsRepository) =>
         new DeleteAnswerCommentUseCase(repo),
-      inject: [PrismaAnswerCommentsRepository],
+      inject: [AnswerCommentsRepository],
     },
     {
       provide: FetchQuestionCommentsUseCase,
       useFactory: (repo: QuestionCommentsRepository) =>
         new FetchQuestionCommentsUseCase(repo),
-      inject: [PrismaQuestionCommentsRepository],
+      inject: [QuestionCommentsRepository],
     },
     {
       provide: FetchAnswerCommentsUseCase,
       useFactory: (repo: AnswerCommentsRepository) =>
         new FetchAnswerCommentsUseCase(repo),
-      inject: [PrismaAnswerCommentsRepository],
+      inject: [AnswerCommentsRepository],
     },
     {
       provide: UploadAndCreateAttachmentUseCase,
       useFactory: (repo: AttachmentsRepository, uploader: Uploader) =>
         new UploadAndCreateAttachmentUseCase(repo, uploader),
-      inject: [PrismaAttachmentsRepository, R2Storage],
+      inject: [AttachmentsRepository, Uploader],
     },
   ],
 })
