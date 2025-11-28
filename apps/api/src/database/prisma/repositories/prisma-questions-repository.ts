@@ -70,20 +70,24 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   async save(question: Question): Promise<void> {
     const data = PrismaQuestionMapper.toPrisma(question);
 
-    await Promise.all([
-      this.prisma.question.update({
+    await this.prisma.$transaction(async (trx) => {
+      await trx.question.update({
         where: {
           id: question.id.toString(),
         },
         data,
-      }),
-      this.questionAttachmentsRepository.createMany(
+      });
+
+      await this.questionAttachmentsRepository.createMany(
         question.attachments.getNewItems(),
-      ),
-      this.questionAttachmentsRepository.deleteMany(
+        trx,
+      );
+
+      await this.questionAttachmentsRepository.deleteMany(
         question.attachments.getRemovedItems(),
-      ),
-    ]);
+        trx,
+      );
+    });
   }
 
   async delete(question: Question): Promise<void> {
