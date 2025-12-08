@@ -1,3 +1,4 @@
+import type { CommentWithAuthor } from "@/core/entities/value-objects/comment-with-author";
 import type { PaginationParams } from "@/core/repositories/pagination-params";
 import type { QuestionComment } from "../../enterprise/entities/question-comment";
 
@@ -8,6 +9,11 @@ export abstract class QuestionCommentsRepository {
     questionId: string,
     params: PaginationParams,
   ): Promise<QuestionComment[]>;
+
+  abstract findManyByQuestionIdWithAuthor(
+    questionId: string,
+    params: PaginationParams,
+  ): Promise<CommentWithAuthor[]>;
 
   abstract create(questionComment: QuestionComment): Promise<void>;
 
