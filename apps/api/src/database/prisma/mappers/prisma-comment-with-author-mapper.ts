@@ -1,5 +1,4 @@
-import { UniqueEntityID } from '@forum/domain';
-import { CommentWithAuthor } from '@forum/domain/src/core/entities/value-objects/comment-with-author';
+import { CommentWithAuthor, UniqueEntityID } from '@forum/domain';
 import { Comment as PrismaComment, User as PrismaUser } from 'generated/prisma';
 
 type PrismaCommentWithAuthor = PrismaComment & {
