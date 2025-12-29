@@ -9,7 +9,7 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { z } from 'zod';
-import { CommentPresenter } from '../presenters/comment-presenter';
+import { CommentWithAuthorPresenter } from '../presenters/comment-with-author-presenter';
 
 const pageQueryParamSchema = z
   .string()
@@ -41,11 +41,11 @@ export class FetchAnswerCommentsController {
       throw new BadRequestException();
     }
 
-    const answerComments = result.value.answerComments;
+    const comments = result.value.comments;
 
     return {
-      comments: answerComments.map((comment) =>
-        CommentPresenter.toHTTP(comment),
+      comments: comments.map((comment) =>
+        CommentWithAuthorPresenter.toHTTP(comment),
       ),
     };
   }

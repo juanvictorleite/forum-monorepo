@@ -1,5 +1,5 @@
+import type { CommentWithAuthor } from "@/core";
 import { type Either, right } from "@/core/either";
-import type { AnswerComment } from "../../enterprise/entities/answer-comment";
 import type { AnswerCommentsRepository } from "../repositories/answer-comments-repository";
 
 interface FetchAnswerCommentsUseCaseRequest {
@@ -10,7 +10,7 @@ interface FetchAnswerCommentsUseCaseRequest {
 type FetchAnswerCommentsUseCaseResponse = Either<
   null,
   {
-    answerComments: AnswerComment[];
+    comments: CommentWithAuthor[];
   }
 >;
 
@@ -21,13 +21,16 @@ export class FetchAnswerCommentsUseCase {
     answerId,
     page,
   }: FetchAnswerCommentsUseCaseRequest): Promise<FetchAnswerCommentsUseCaseResponse> {
-    const answerComments =
-      await this.answerCommentsRepository.findManyByAnswerId(answerId, {
-        page,
-      });
+    const comments =
+      await this.answerCommentsRepository.findManyByAnswerIdWithAuthor(
+        answerId,
+        {
+          page,
+        },
+      );
 
     return right({
-      answerComments,
+      comments,
     });
   }
 }
