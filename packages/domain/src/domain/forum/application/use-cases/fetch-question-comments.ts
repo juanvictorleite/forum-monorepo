@@ -1,5 +1,5 @@
 import { type Either, right } from "@/core/either";
-import type { CommentWithAuthor } from "@/core/entities/value-objects/comment-with-author";
+import type { CommentWithAuthor } from "../../enterprise";
 import type { QuestionCommentsRepository } from "../repositories/question-comments-repository";
 
 interface FetchQuestionCommentsUseCaseRequest {

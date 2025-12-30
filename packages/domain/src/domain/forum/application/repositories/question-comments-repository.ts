@@ -1,5 +1,5 @@
-import type { CommentWithAuthor } from "@/core/entities/value-objects/comment-with-author";
 import type { PaginationParams } from "@/core/repositories/pagination-params";
+import type { CommentWithAuthor } from "../../enterprise";
 import type { QuestionComment } from "../../enterprise/entities/question-comment";
 
 export abstract class QuestionCommentsRepository {

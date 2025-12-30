@@ -1,5 +1,5 @@
-import { CommentWithAuthor } from "@/core/entities/value-objects/comment-with-author";
 import type { PaginationParams } from "@/core/repositories/pagination-params";
+import { CommentWithAuthor } from "@/domain";
 import type { QuestionCommentsRepository } from "@/domain/forum/application/repositories/question-comments-repository";
 import type { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
 import type { InMemoryStudentsRepository } from "./in-memory-students-repository";
