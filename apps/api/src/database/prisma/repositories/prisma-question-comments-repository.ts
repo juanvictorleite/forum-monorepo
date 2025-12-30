@@ -1,9 +1,9 @@
 import {
+  CommentWithAuthor,
   PaginationParams,
   QuestionComment,
   QuestionCommentsRepository,
 } from '@forum/domain';
-import { CommentWithAuthor } from '@forum/domain/src/core/entities/value-objects/comment-with-author';
 import { Injectable } from '@nestjs/common';
 import { PrismaCommentWithAuthorMapper } from '../mappers/prisma-comment-with-author-mapper';
 import { PrismaQuestionCommentMapper } from '../mappers/prisma-question-comment-mapper';

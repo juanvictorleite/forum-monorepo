@@ -1,4 +1,4 @@
-import { CommentWithAuthor } from '@forum/domain/src/core/entities/value-objects/comment-with-author';
+import { CommentWithAuthor } from '@forum/domain';
 
 export class CommentWithAuthorPresenter {
   static toHTTP(commentWithAuthor: CommentWithAuthor) {
