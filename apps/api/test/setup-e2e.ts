@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
 
+import { DomainEvents } from '@forum/domain';
 import { execSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { PrismaClient } from '../generated/prisma';
@@ -29,6 +30,8 @@ beforeAll(() => {
   process.env.DATABASE_URL = databaseURL;
 
   prisma = new PrismaClient();
+
+  DomainEvents.shouldRun = false;
 
   execSync('pnpm prisma migrate deploy', {
     env: { ...process.env, DATABASE_URL: databaseURL },

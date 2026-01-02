@@ -4,7 +4,7 @@ import type {
   QuestionDetails,
   QuestionsRepository,
 } from '@forum/domain';
-import { QuestionAttachmentsRepository } from '@forum/domain';
+import { DomainEvents, QuestionAttachmentsRepository } from '@forum/domain';
 import { Injectable } from '@nestjs/common';
 import { PrismaQuestionDetailsMapper } from '../mappers/prisma-question-details-mapper';
 import { PrismaQuestionMapper } from '../mappers/prisma-question-mapper';
@@ -88,6 +88,8 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
         trx,
       );
     });
+
+    DomainEvents.dispatchEventsForAggregate(question.id);
   }
 
   async save(question: Question): Promise<void> {
@@ -111,6 +113,8 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
         trx,
       );
     });
+
+    DomainEvents.dispatchEventsForAggregate(question.id);
   }
 
   async delete(question: Question): Promise<void> {

@@ -2,6 +2,7 @@ import {
   Answer,
   AnswerAttachmentsRepository,
   AnswersRepository,
+  DomainEvents,
   PaginationParams,
 } from '@forum/domain';
 import { Injectable } from '@nestjs/common';
@@ -60,6 +61,8 @@ export class PrismaAnswersRepository implements AnswersRepository {
         trx,
       );
     });
+
+    DomainEvents.dispatchEventsForAggregate(answer.id);
   }
 
   async save(answer: Answer): Promise<void> {
@@ -83,6 +86,8 @@ export class PrismaAnswersRepository implements AnswersRepository {
         trx,
       );
     });
+
+    DomainEvents.dispatchEventsForAggregate(answer.id);
   }
 
   async delete(answer: Answer): Promise<void> {
