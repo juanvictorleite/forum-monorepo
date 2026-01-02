@@ -80,4 +80,8 @@ describe('Get question by slug (E2E)', () => {
       }),
     });
   });
+
+  afterAll(async () => {
+    await app.close();
+  });
 });
