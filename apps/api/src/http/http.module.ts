@@ -23,9 +23,11 @@ import {
   GetQuestionBySlugUseCase,
   HashComparer,
   HashGenerator,
+  NotificationsRepository,
   QuestionAttachmentsRepository,
   QuestionCommentsRepository,
   QuestionsRepository,
+  ReadNotificationUseCase,
   RegisterStudentUseCase,
   StudentsRepository,
   UploadAndCreateAttachmentUseCase,
@@ -53,6 +55,7 @@ import { FetchQuestionAnswersController } from './controllers/fetch-question-ans
 import { FetchQuestionCommentsController } from './controllers/fetch-question-comments.controller';
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller';
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller';
+import { ReadNotificationController } from './controllers/read-notification.controller';
 import { UploadAttachmentController } from './controllers/upload-attachment.controller';
 
 @Module({
@@ -77,6 +80,7 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
     FetchQuestionCommentsController,
     FetchAnswerCommentsController,
     UploadAttachmentController,
+    ReadNotificationController,
   ],
   providers: [
     {
@@ -208,6 +212,12 @@ import { UploadAttachmentController } from './controllers/upload-attachment.cont
       useFactory: (repo: AttachmentsRepository, uploader: Uploader) =>
         new UploadAndCreateAttachmentUseCase(repo, uploader),
       inject: [AttachmentsRepository, Uploader],
+    },
+    {
+      provide: ReadNotificationUseCase,
+      useFactory: (repo: NotificationsRepository) =>
+        new ReadNotificationUseCase(repo),
+      inject: [NotificationsRepository],
     },
   ],
 })
