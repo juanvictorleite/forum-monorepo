@@ -10,6 +10,7 @@ import {
   StudentsRepository,
 } from '@forum/domain';
 import { Module } from '@nestjs/common';
+import { CacheModule } from 'src/cache/cache.module';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaAnswerAttachmentsRepository } from './prisma/repositories/prisma-answer-attachments-repository';
 import { PrismaAnswerCommentsRepository } from './prisma/repositories/prisma-answer-comments-repository';
@@ -22,6 +23,7 @@ import { PrismaQuestionsRepository } from './prisma/repositories/prisma-question
 import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-repository';
 
 @Module({
+  imports: [CacheModule],
   providers: [
     PrismaService,
     {
